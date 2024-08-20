@@ -13,17 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: build our shit
-        run: ./ssg -i resources.json -o resources.html
-      - name: make our output tar
-        run: tar cvf out.tar resources.html
-      - name: gzip the tar
-        run: gzip out.tar
+      - name: do i really have to name this
+        run: mkdir out
 
-      - name: upload the artifact
-        uses: actions/upload-artifact@v4.3.6
+      - name: build our shit
+        run: ./ssg -i resources.json -o out/index.html
+
+      - name: you can tell what this does
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: github-pages
-          path: out.tar.gz
-          if-no-files-found: error
-          overwrite: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          force_orphan: true
+          commit_message: Build for
